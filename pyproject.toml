@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "fastapi-fruits-api"
+version = "0.1.0"
+description = "FastAPI project to deal with delicious fruits. Tasty."
+authors = ["Eduardo Rezaghi <eduardo.rezaghi@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.111.0"
+uvicorn = "^0.30.1"
+sqlalchemy = "^2.0.30"
+psycopg = {extras = ["binary"], version = "^3.1.19"}
+pydantic = "^2.7.3"
+pytest = "^8.2.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^21.12b0"
+flake8 = "^4.0.1"
+isort = "^5.10.3"
+redis = "^5.0.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
