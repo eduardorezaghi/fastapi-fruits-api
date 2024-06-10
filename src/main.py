@@ -7,7 +7,7 @@ from src import models, schemas
 app = FastAPI()
 
 def get_db():
-    db = database.SessionLocal
+    db = database.SessionLocal()
     try:
         yield db
     finally:
