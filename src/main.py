@@ -15,7 +15,7 @@ def get_db():
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"message": "Welcome to this fantastic app!"}
 
 @app.post("/fruits/", response_model=schemas.Fruit, status_code=201)
 def create_fruit(fruit: schemas.FruitCreate, db: Session = Depends(get_db)):
