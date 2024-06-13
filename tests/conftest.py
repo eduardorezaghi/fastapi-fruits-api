@@ -8,7 +8,7 @@ from src.database import Base as RealBase
 import pytest
 
 # Create a test database (in memory)
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+SQLALCHEMY_DATABASE_URL = "sqlite://"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
@@ -24,6 +24,11 @@ Base.metadata.create_all(bind=engine)
 # Override the get_db dependency for testing
 @pytest.fixture(scope="function")
 def db_session():
+    """Create a new session for the test database.
+
+    Yields:
+        session: A new session for the test database.
+    """
     connection = engine.connect()
     transaction = connection.begin()
     session = TestingSessionLocal(bind=connection)
