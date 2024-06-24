@@ -28,6 +28,9 @@ class FruitRepository:
             .filter(Fruit.id == fruit_id) \
             .first()
 
+    def get_fruits(self):
+        return self.db_session.query(Fruit).all()
+
     def update_fruit(self, fruit: Fruit):
         self.db_session.add(fruit)
         self.db_session.commit()
