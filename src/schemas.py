@@ -5,9 +5,16 @@ class Status(Enum):
     SUCCESS = "Success"
     FAILED = "Failed"
 
+class FlavorVariation(Enum):
+    CITRIC = "Citric"
+    SWEET = "Sweet"
+    SOUR = "Sour"
+    BITTER = "Bitter"
+
 class FruitBase(BaseModel):
     name: str
     description: str | None = None
+    flavor_variation: FlavorVariation
 
 class FruitCreate(FruitBase):
     pass

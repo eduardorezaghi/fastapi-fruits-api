@@ -27,7 +27,8 @@ def create_fruit(fruit: schemas.FruitCreate, db: Session = Depends(get_db)):
         id=db_fruit.id,
         Status=schemas.Status.SUCCESS,
         name=db_fruit.name,
-        description=db_fruit.description
+        description=db_fruit.description,
+        flavor_variation=db_fruit.flavor_variation
     )
 
 @app.get("/fruits/{fruit_id}", response_model=schemas.Fruit)
@@ -43,5 +44,6 @@ def read_fruit(fruit_id: int, db: Session = Depends(get_db)):
         Status=schemas.Status.SUCCESS,
         id=db_fruit.id,
         name=db_fruit.name,
-        description=db_fruit.description
+        description=db_fruit.description,
+        flavor_variation=db_fruit.flavor_variation
     )
