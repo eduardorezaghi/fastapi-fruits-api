@@ -10,6 +10,7 @@ class FlavorVariation(Enum):
     SWEET = "Sweet"
     SOUR = "Sour"
     BITTER = "Bitter"
+    TANGY = "Tangy"
 
 class FruitBase(BaseModel):
     name: str
