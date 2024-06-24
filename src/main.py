@@ -20,9 +20,7 @@ def read_root():
 @app.post("/fruits/", response_model=schemas.Fruit, status_code=201)
 def create_fruit(fruit: schemas.FruitCreate, db: Session = Depends(get_db)):
     db_fruit = models.Fruit(**fruit.model_dump())
-    db.add(db_fruit)
-    db.commit()
-    db.refresh(db_fruit)
+    db_fruit = models.FruitRepository(db).create_fruit(db_fruit)
     return schemas.FruitCreatedResponse(
         id=db_fruit.id,
         Status=schemas.Status.SUCCESS,
@@ -31,11 +29,19 @@ def create_fruit(fruit: schemas.FruitCreate, db: Session = Depends(get_db)):
         flavor_variation=db_fruit.flavor_variation
     )
 
+@app.get("/fruits", response_model=schemas.Fruit)
+def read_fruits(db: Session = Depends(get_db)):
+    fruits = models.FruitRepository(db).get_fruits()
+    return schemas.GetFruitsResponse(
+        Status=schemas.Status.SUCCESS,
+        fruits=fruits
+    )
+
 @app.get("/fruits/{fruit_id}", response_model=schemas.Fruit)
 def read_fruit(fruit_id: int, db: Session = Depends(get_db)):
-    db_fruit = db.query(models.Fruit) \
-                .filter(models.Fruit.id == fruit_id) \
-                .first()
+    
+    # Use the repository to encapsulate the database operations
+    db_fruit = models.FruitRepository(db).get_fruit(fruit_id)
 
     if db_fruit is None:
         raise HTTPException(status_code=404, detail="Fruit not found")

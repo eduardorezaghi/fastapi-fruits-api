@@ -17,6 +17,11 @@ class FruitBase(BaseModel):
     description: str | None = None
     flavor_variation: FlavorVariation
 
+class Fruit(FruitBase):
+    model_config: dict = ConfigDict(from_attributes=True)
+
+    id: int
+
 class FruitCreate(FruitBase):
     pass
 
@@ -33,8 +38,8 @@ class GetFruitResponse(FruitBase):
     id: int
 
 
-class Fruit(FruitBase):
+class GetFruitsResponse(BaseModel):
     model_config: dict = ConfigDict(from_attributes=True)
 
-    id: int
-
+    Status: Status
+    fruits: list[FruitBase] | None = None
