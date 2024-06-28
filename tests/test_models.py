@@ -1,5 +1,6 @@
 import pytest
-from src.models import Fruit, FruitRepository
+from src.models import Fruit
+from src.repositories import FruitRepository
 from src.schemas import FlavorVariation
 
 @pytest.fixture
@@ -7,7 +8,7 @@ def fruit_repo(db_session):
     return FruitRepository(db_session)
 
 class TestFruitRepository:
-    def test_create_fruit(self, db_session, fruit_repo):
+    def test_create_fruit(self, db_session, fruit_repo: FruitRepository):
         # Arrange
         fruit = Fruit(name="Apple", description="A delicious red fruit", flavor_variation="SWEET")
 
