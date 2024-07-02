@@ -1,24 +1,19 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
-from src import database, repositories
+from src import repositories
 from src import models, schemas
+from src import get_session
 
 app = FastAPI()
 
-def get_db():
-    db = database.SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @app.get("/")
 async def read_root():
     return {"message": "Welcome to this fantastic app!"}
 
 @app.post("/fruits/", response_model=schemas.Fruit, status_code=201)
-async def create_fruit(fruit: schemas.FruitCreate, db: Session = Depends(get_db)):
+async def create_fruit(fruit: schemas.FruitCreate, db: Session = Depends(get_session)):
     db_fruit = models.Fruit(**fruit.model_dump())
     db_fruit = repositories.FruitRepository(db).create_fruit(db_fruit)
     return schemas.FruitCreatedResponse(
@@ -29,8 +24,8 @@ async def create_fruit(fruit: schemas.FruitCreate, db: Session = Depends(get_db)
         flavor_variation=db_fruit.flavor_variation
     )
 
-@app.get("/fruits", response_model=schemas.Fruit)
-async def read_fruits(db: Session = Depends(get_db), offset: int = 0, limit: int = 100
+@app.get("/fruits", response_model=schemas.GetFruitsResponse)
+async def read_fruits(db: Session = Depends(get_session), offset: int = 0, limit: int = 100
                       ):
     fruits = repositories.FruitRepository(db).get_fruits()
     return schemas.GetFruitsResponse(
@@ -39,7 +34,7 @@ async def read_fruits(db: Session = Depends(get_db), offset: int = 0, limit: int
     )
 
 @app.get("/fruits/{fruit_id}", response_model=schemas.Fruit)
-async def read_fruit(fruit_id: int, db: Session = Depends(get_db)):
+async def read_fruit(fruit_id: int, db: Session = Depends(get_session)):
     
     # Use the repository to encapsulate the database operations
     db_fruit = repositories.FruitRepository(db).get_fruit(fruit_id)
