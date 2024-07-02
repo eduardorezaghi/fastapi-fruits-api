@@ -1,0 +1,15 @@
+FROM python:3.12-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+# Copy your project files
+COPY . .
+
+# Set environment variables (Adjust as needed)
+ENV CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+ENV CELERY_RESULT_BACKEND=rpc://
